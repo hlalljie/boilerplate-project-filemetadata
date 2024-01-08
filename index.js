@@ -1,5 +1,4 @@
-// Test commit
-var express = require('express');
+// Library requires, config, and setup
 var cors = require('cors');
 const multer  = require('multer');
 const upload = multer({ dest: 'uploads/' });
@@ -11,15 +10,17 @@ var app = express();
 app.use(cors());
 app.use('/public', express.static(process.cwd() + '/public'));
 
+// Route to homepage on start
 app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-
+// Return file analysis data from an uploaded file sent via post request
 app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
   res.json({name: req.file.originalname, type: req.file.mimetype, size: req.file.size});
 });
 
+// Set port and listen
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log('Your app is listening on port ' + port)
